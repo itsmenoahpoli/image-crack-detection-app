@@ -16,9 +16,40 @@ export const DefaultLayout = (props) => {
         </title>
 
         <meta
+          name="description"
+          content={pageSEO?.description ?? APP_CONSTANTS.APP_DESCRIPTION}
+        />
+
+        <meta
+          name="keywords"
+          content="Image, Photo, Crack, Crack Detection, Image Crack Detection, Building Image, Building Photo"
+        />
+
+        <meta name="image" content="assets/images/brand-logo.png" />
+
+        <meta
           name="og:description"
           content={pageSEO?.description ?? APP_CONSTANTS.APP_DESCRIPTION}
         />
+
+        <meta
+          name="og:keywords"
+          content="Image, Photo, Crack, Crack Detection, Image Crack Detection, Building Image, Building Photo"
+        />
+
+        <meta name="og:image" content="assets/images/brand-logo.png" />
+
+        <meta
+          name="twitter:description"
+          content={pageSEO?.description ?? APP_CONSTANTS.APP_DESCRIPTION}
+        />
+
+        <meta
+          name="twitter:keywords"
+          content="Image, Photo, Crack, Crack Detection, Image Crack Detection, Building Image, Building Photo"
+        />
+
+        <meta name="twitter:image" content="assets/images/brand-logo.png" />
       </Head>
 
       <Container fluid className="default-layout-container">
