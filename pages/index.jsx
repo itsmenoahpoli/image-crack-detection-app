@@ -15,11 +15,6 @@ import brandLogo from "assets/images/brand-logo.png";
 import fileUploadLogo from "assets/file-upload.svg";
 import { DefaultLayout } from "src/components/layouts";
 
-const PAGE_SEO = {
-  title: "Crack Tech - Welcome",
-  description: "",
-};
-
 const ButtonLoadingComponent = () => {
   return <Spinner animation="border" variant="light" size="sm" />;
 };
@@ -122,7 +117,7 @@ const HomePage = () => {
   };
 
   return (
-    <DefaultLayout pageSEO={PAGE_SEO}>
+    <DefaultLayout>
       <LoadingBar color="#1976D2" progress={uploadProgress} />
 
       <Container fluid className="main-section-container">

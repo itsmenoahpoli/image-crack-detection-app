@@ -10,11 +10,14 @@ export const DefaultLayout = (props) => {
   return (
     <>
       <Head>
-        <title>{pageSEO.title ?? APP_CONSTANTS.APP_NAME}</title>
+        <title>
+          {pageSEO?.title ??
+            `${APP_CONSTANTS.APP_NAME} - ${APP_CONSTANTS.APP_DESCRIPTION}`}
+        </title>
 
         <meta
           name="og:description"
-          content={pageSEO.description ?? APP_CONSTANTS.APP_DESCRIPTION}
+          content={pageSEO?.description ?? APP_CONSTANTS.APP_DESCRIPTION}
         />
       </Head>
 
