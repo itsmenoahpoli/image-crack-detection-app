@@ -8,6 +8,7 @@ import {
   Spinner,
   Alert,
 } from "react-bootstrap";
+import { FiAlertCircle } from "react-icons/fi";
 import LoadingBar from "react-top-loading-bar";
 
 import brandLogo from "assets/images/brand-logo.png";
@@ -35,6 +36,8 @@ const HomePage = () => {
 
   const handleAnalyzePhoto = () => {
     setDisabled(true);
+
+    // TODO: !!FINAL!! - Integrate backend API for the image crack detection algo library
   };
 
   const handleReset = () => {
@@ -45,7 +48,6 @@ const HomePage = () => {
   const handleFileInput = (e) => {
     e.preventDefault();
 
-    resetError();
     startProgressLoading();
 
     const { files } = e.target;
@@ -87,6 +89,7 @@ const HomePage = () => {
   };
 
   const handleOpenFileInput = () => {
+    resetError();
     fileInputRef.current.click();
   };
 
@@ -138,7 +141,8 @@ const HomePage = () => {
             <Card className="col-sm-10 col-md-6 col-lg-5 mx-auto">
               <Card.Body>
                 {Boolean(error.show) && (
-                  <Alert variant="danger">
+                  <Alert variant="danger" className="mb-3">
+                    <FiAlertCircle /> &nbsp;
                     <small>{error.message}</small>
                   </Alert>
                 )}
