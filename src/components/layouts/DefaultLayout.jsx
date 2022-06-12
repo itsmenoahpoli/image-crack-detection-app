@@ -25,7 +25,7 @@ export const DefaultLayout = (props) => {
           content="Image, Photo, Crack, Crack Detection, Image Crack Detection, Building Image, Building Photo"
         />
 
-        <meta name="image" content="assets/images/brand-logo.png" />
+        <meta name="image" content="" />
 
         <meta
           name="og:description"
@@ -37,7 +37,7 @@ export const DefaultLayout = (props) => {
           content="Image, Photo, Crack, Crack Detection, Image Crack Detection, Building Image, Building Photo"
         />
 
-        <meta name="og:image" content="assets/images/brand-logo.png" />
+        <meta name="og:image" content="" />
 
         <meta
           name="twitter:description"
@@ -49,7 +49,7 @@ export const DefaultLayout = (props) => {
           content="Image, Photo, Crack, Crack Detection, Image Crack Detection, Building Image, Building Photo"
         />
 
-        <meta name="twitter:image" content="assets/images/brand-logo.png" />
+        <meta name="twitter:image" content="" />
       </Head>
 
       <Container fluid className="default-layout-container">

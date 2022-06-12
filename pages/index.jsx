@@ -10,10 +10,22 @@ import {
 } from "react-bootstrap";
 import { FiAlertCircle } from "react-icons/fi";
 import LoadingBar from "react-top-loading-bar";
+import axios from "axios";
 
 import brandLogo from "assets/images/brand-logo.png";
 import fileUploadLogo from "assets/file-upload.svg";
 import { DefaultLayout } from "src/components/layouts";
+
+const axiosInstance = () => {
+  return axios.create({
+    baseURL: "http://localhost:8000/api/v1",
+    responseType: "arraybuffer",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
 
 const ButtonLoadingComponent = () => {
   return <Spinner animation="border" variant="light" size="sm" />;
@@ -27,17 +39,52 @@ const HomePage = () => {
     tempURL: "",
     file: null,
   });
+  const [processedImage, setProcessedImage] = React.useState(null);
+
   const fileInputRef = React.useRef(null);
 
-  const handleAnalyzePhoto = () => {
+  const encodeImageToBase64 = (arrayBuffer) => {
+    let u8 = new Uint8Array(arrayBuffer);
+    let b64encoded = btoa(
+      [].reduce.call(
+        new Uint8Array(arrayBuffer),
+        function (p, c) {
+          return p + String.fromCharCode(c);
+        },
+        ""
+      )
+    );
+    let mimetype = "image/jpeg";
+
+    return "data:" + mimetype + ";base64," + b64encoded;
+  };
+
+  const handleAnalyzePhoto = async () => {
     setDisabled(true);
 
-    // TODO: !!FINAL!! - Integrate backend API for the image crack detection algo library
+    let formData = new FormData();
+
+    formData.append("file", image.file);
+
+    let response = await axiosInstance()
+      .post("/image/process", formData)
+      .then((response) => {
+        let base64Image = new Buffer(response.data, "binary").toString(
+          "base64"
+        );
+
+        setProcessedImage(base64Image);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => setDisabled(false));
   };
 
   const handleReset = () => {
     setDisabled(false);
     setImage({ tempURL: "", file: null });
+    setProcessedImage(null);
   };
 
   const handleFileInput = (e) => {
@@ -201,6 +248,31 @@ const HomePage = () => {
                     )}
                   </Col>
                 </Row>
+              </Card.Body>
+            </Card>
+
+            <Card className="col-sm-10 col-md-6 col-lg-5 mx-auto mt-4 mb-5">
+              <Card.Body>
+                {processedImage ? (
+                  <>
+                    <Container fluid className="mb-0">
+                      <img
+                        className="img-fluid"
+                        src={`data:image/png;base64, ${processedImage}`}
+                        alt="processed-image"
+                      />
+                    </Container>
+
+                    <Container fluid className="text-white">
+                      <p>Type of crack detected &mdash; [WALLCRACK]</p>
+                      <p>Type of fix recommended &mdash; [FIX-PROCESS-NAME]</p>
+                    </Container>
+                  </>
+                ) : (
+                  <p className="text-white text-center mb-0">
+                    Pending processed image
+                  </p>
+                )}
               </Card.Body>
             </Card>
           </Container>
