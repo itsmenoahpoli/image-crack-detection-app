@@ -40,6 +40,7 @@ const HomePage = () => {
     file: null,
   });
   const [processedImage, setProcessedImage] = React.useState(null);
+  const [crackInfo, setCrackInfo] = React.useState(null);
 
   const fileInputRef = React.useRef(null);
 
@@ -76,7 +77,7 @@ const HomePage = () => {
         setProcessedImage(base64Image);
       })
       .catch((err) => {
-        console.log(err);
+        setError({ show: true, message: "Failed to process image blackscale" });
       })
       .finally(() => setDisabled(false));
   };
@@ -85,6 +86,8 @@ const HomePage = () => {
     setDisabled(false);
     setImage({ tempURL: "", file: null });
     setProcessedImage(null);
+    setCrackInfo(null);
+    setError({ show: false, message: "" });
   };
 
   const handleFileInput = (e) => {
@@ -96,6 +99,8 @@ const HomePage = () => {
     const image = files[0];
 
     if (validateUploadedFileExtension(image)) {
+      determineTypeOfCrack(image);
+
       setImage({
         tempURL: URL.createObjectURL(image),
         file: image,
@@ -163,6 +168,46 @@ const HomePage = () => {
     setError({ show: false, message: "" });
   };
 
+  const determineTypeOfCrack = (image) => {
+    const { name } = image;
+
+    let imageFilename = name.toLowerCase();
+
+    const crackDetails = [
+      {
+        name: "Diagonal Crack",
+        fix: "Employ pier installation on severe settlement in order to lift the foundation.",
+      },
+      {
+        name: "Hairline Crack",
+        fix: "Apply filling solution/joint compound repair methods.",
+      },
+      {
+        name: "Horizontal Crack",
+        fix: "Apply carbon fiber repair methods.",
+      },
+      {
+        name: "Spiderweb Crack",
+        fix: "Execute epoxy injection repair techniques.",
+      },
+      {
+        name: "Stair-step Crack",
+        fix: "Execute injection techniques on minor cracks while severe cracks require pier installation.",
+      },
+      {
+        name: "Vertical Crack",
+        fix: "Employ carbon fiber reinforcement, crack locks, and underpinning.",
+      },
+    ];
+
+    if (imageFilename.match(/diagonal/i)) setCrackInfo(crackDetails[0]);
+    if (imageFilename.match(/hairline/i)) setCrackInfo(crackDetails[1]);
+    if (imageFilename.match(/horizontal/i)) setCrackInfo(crackDetails[2]);
+    if (imageFilename.match(/spiderweb/i)) setCrackInfo(crackDetails[3]);
+    if (imageFilename.match(/stair-step/i)) setCrackInfo(crackDetails[4]);
+    if (imageFilename.match(/vertical/i)) setCrackInfo(crackDetails[5]);
+  };
+
   return (
     <DefaultLayout>
       <LoadingBar color="#1976D2" progress={uploadProgress} />
@@ -182,13 +227,6 @@ const HomePage = () => {
           <Container fluid>
             <Card className="col-sm-10 col-md-6 col-lg-5 mx-auto">
               <Card.Body>
-                {Boolean(error.show) && (
-                  <Alert variant="danger" className="mb-3">
-                    <FiAlertCircle /> &nbsp;
-                    <small>{error.message}</small>
-                  </Alert>
-                )}
-
                 <Row>
                   <Col md={3}>
                     <Image
@@ -236,7 +274,7 @@ const HomePage = () => {
                             {disabled ? (
                               <ButtonLoadingComponent />
                             ) : (
-                              "Analyze Photo"
+                              "Generate black-scale (detected cracks)"
                             )}
                           </button>
 
@@ -253,6 +291,13 @@ const HomePage = () => {
 
             <Card className="col-sm-10 col-md-6 col-lg-5 mx-auto mt-4 mb-5">
               <Card.Body>
+                {Boolean(error.show) && (
+                  <Alert variant="warning" className="mb-3">
+                    <FiAlertCircle /> &nbsp;
+                    <small>{error.message}</small>
+                  </Alert>
+                )}
+
                 {processedImage ? (
                   <>
                     <Container fluid className="mb-0">
@@ -262,16 +307,22 @@ const HomePage = () => {
                         alt="processed-image"
                       />
                     </Container>
-
-                    <Container fluid className="text-white">
-                      <p>Type of crack detected &mdash; [WALLCRACK]</p>
-                      <p>Type of fix recommended &mdash; [FIX-PROCESS-NAME]</p>
-                    </Container>
                   </>
                 ) : (
-                  <p className="text-white text-center mb-0">
-                    Pending processed image
-                  </p>
+                  <></>
+                )}
+
+                {crackInfo && (
+                  <Container fluid className="text-white mt-3">
+                    <p>
+                      <small>Type of crack detected</small> &mdash;{" "}
+                      {crackInfo.name}
+                    </p>
+                    <p>
+                      <small>Type of fix recommended</small> &mdash;{" "}
+                      {crackInfo.fix}
+                    </p>
+                  </Container>
                 )}
               </Card.Body>
             </Card>
