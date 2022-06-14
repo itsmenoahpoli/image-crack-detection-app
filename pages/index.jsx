@@ -148,7 +148,7 @@ const HomePage = () => {
 
   const validateUploadedFileExtension = (file) => {
     const { name } = file;
-    let allowedExtensions = ["jpg", "jpeg", "png"];
+    let allowedExtensions = ["jpg", "jpeg", "png", "JPG", "JPEG", "PNG"];
 
     const fileName = name;
     const fileExtension = fileName.split(".")[fileName.split(".").length - 1];
